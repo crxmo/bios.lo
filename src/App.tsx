@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import Stats from './components/Stats';
 import SignUp from './components/SignUp';
+import Login from './components/Login';
 
 function SignUpPage() {
   const [searchParams] = useSearchParams();
@@ -27,6 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );

@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
-import { Mail, Key, User, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Mail, Key, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-interface SignUpProps {
-  defaultUsername?: string;
-}
 
 interface FormData {
   email: string;
   password: string;
-  username: string;
-  acceptedTos: boolean;
 }
 
 interface FormErrors {
@@ -18,12 +12,10 @@ interface FormErrors {
   password?: string;
 }
 
-export default function SignUp({ defaultUsername = '' }: SignUpProps) {
+export default function Login() {
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
-    username: defaultUsername,
-    acceptedTos: false
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
@@ -42,20 +34,6 @@ export default function SignUp({ defaultUsername = '' }: SignUpProps) {
     }
   };
 
-  const validatePassword = (password: string) => {
-    if (password.length < 8) {
-      setErrors(prev => ({
-        ...prev,
-        password: 'Le mot de passe doit contenir au moins 8 caractères'
-      }));
-    } else {
-      setErrors(prev => ({
-        ...prev,
-        password: undefined
-      }));
-    }
-  };
-
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newEmail = e.target.value;
     setFormData(prev => ({ ...prev, email: newEmail }));
@@ -65,14 +43,12 @@ export default function SignUp({ defaultUsername = '' }: SignUpProps) {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
     setFormData(prev => ({ ...prev, password: newPassword }));
-    validatePassword(newPassword);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     validateEmail(formData.email);
-    validatePassword(formData.password);
-    if (!errors.email && !errors.password) {
+    if (!errors.email) {
       console.log('Form submitted:', formData);
     }
   };
@@ -127,9 +103,7 @@ export default function SignUp({ defaultUsername = '' }: SignUpProps) {
                 <input
                   type={showPassword ? "text" : "password"}
                   required
-                  className={`block w-full pl-10 pr-12 py-3 bg-gray-900/50 border-0 rounded-xl text-white placeholder-gray-500 focus:ring-0 ${
-                    errors.password ? 'ring-2 ring-red-500' : ''
-                  }`}
+                  className="block w-full pl-10 pr-12 py-3 bg-gray-900/50 border-0 rounded-xl text-white placeholder-gray-500 focus:ring-0"
                   placeholder="Password"
                   value={formData.password}
                   onChange={handlePasswordChange}
@@ -146,60 +120,19 @@ export default function SignUp({ defaultUsername = '' }: SignUpProps) {
                   )}
                 </button>
               </div>
-              {errors.password && (
-                <div className="flex items-center gap-2 text-red-400 text-sm px-2 animate-fadeIn">
-                  <AlertCircle className="w-4 h-4" />
-                  <span>{errors.password}</span>
-                </div>
-              )}
-            </div>
-
-            <div className="relative">
-              <div className="flex rounded-xl bg-gray-900/50 overflow-hidden">
-                <div className="flex items-center px-4 bg-gray-800/50 border-r border-gray-700/30">
-                  <User className="h-5 w-5 text-gray-500" />
-                  <span className="text-gray-500 ml-2">bios.lol/</span>
-                </div>
-                <input
-                  type="text"
-                  required
-                  className="flex-1 py-3 px-3 bg-transparent border-0 text-white placeholder-gray-500 focus:ring-0"
-                  placeholder="username"
-                  value={formData.username}
-                  onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center">
-              <input
-                id="tos"
-                type="checkbox"
-                className="h-4 w-4 bg-gray-900/50 border-gray-700 rounded text-purple-600 focus:ring-purple-500"
-                checked={formData.acceptedTos}
-                onChange={(e) => setFormData({ ...formData, acceptedTos: e.target.checked })}
-              />
-              <label htmlFor="tos" className="ml-2 block text-sm text-gray-400">
-                I agree to ToS
-              </label>
             </div>
 
             <button
               type="submit"
-              disabled={!formData.acceptedTos}
-              className={`w-full py-3 px-4 rounded-xl text-white text-sm font-medium transition-all ${
-                formData.acceptedTos 
-                  ? 'bg-purple-600 hover:bg-purple-700 hover:scale-[1.02]' 
-                  : 'bg-gray-700 cursor-not-allowed'
-              }`}
+              className="w-full py-3 px-4 rounded-xl text-white text-sm font-medium transition-all bg-purple-600 hover:bg-purple-700 hover:scale-[1.02]"
             >
-              Sign Up
+              Login
             </button>
 
             <p className="text-center text-gray-400 text-sm">
-              Already have an account?{' '}
-              <Link to="/login" className="text-purple-500 hover:text-purple-400 transition-colors">
-                Login
+              Don't have an account?{' '}
+              <Link to="/signup" className="text-purple-500 hover:text-purple-400 transition-colors">
+                Sign up
               </Link>
             </p>
           </form>
